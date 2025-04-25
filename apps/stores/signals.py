@@ -1,15 +1,11 @@
-
-from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-from apps.users.models import User
 from apps.stores.models import Store
+from apps.stores.services.store_services import StoreServices
 
 
-@receiver(post_save , sender = User)
-def owner(instance ,created ,*args, **kwargs):
+@receiver(post_save, sender=Store)
+def create_store_template(instance, created, *args, **kwargs):
     if created:
-        Store.objects.create(
-            user = instance,
-            name = instance.email
-        )
+        StoreServices().create_store_template(instance)

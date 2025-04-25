@@ -68,7 +68,7 @@ class AppTemplate(models.Model):
     name = models.CharField(max_length=50)
     display_name = models.CharField(max_length=50, blank=True)
     image = models.ImageField(upload_to="app_template", blank=True, null=True)
-    active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     components = models.JSONField()
     order = models.PositiveIntegerField(default=0)
 
@@ -79,23 +79,23 @@ class AppTemplate(models.Model):
 class StorTemplates(models.Model):
     store = models.ForeignKey(
         Store,
-        related_name="user_templates",
+        related_name="store_templates",
         on_delete=models.CASCADE,
     )
-    app_section = models.ForeignKey(
+    section = models.ForeignKey(
         AppSection,
-        related_name="user_templates",
+        related_name="store_templates",
         on_delete=models.CASCADE,
     )
-    app_templates = models.ForeignKey(
+    app_template = models.ForeignKey(
         AppTemplate,
-        related_name="user_templates",
+        related_name="store_templates",
         on_delete=models.CASCADE,
     )
     is_active = models.BooleanField(default=False)
     components = models.JSONField()
-    components_backup = models.JSONField()
+    components_backup = models.JSONField(blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.app_templates.name
+        return self.app_template.name
