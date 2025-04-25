@@ -98,4 +98,4 @@ class StorTemplates(models.Model):
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.app_templates.name
+        return self.app_template.name

@@ -37,11 +37,11 @@ class AdminAppSection(admin.ModelAdmin):
 
 @admin.register(AppTemplate)
 class AdminAppTemplate(admin.ModelAdmin):
-    list_display = ("name",)
-    list_filter = ("name",)
+    list_display = ("name", "section", "is_active", "order")
+    list_filter = ("name", "section", "is_active", "order")
 
 
 @admin.register(StorTemplates)
 class AdminStorTemplates(admin.ModelAdmin):
-    list_display = ("components",)
-    list_filter = ("components",)
+    list_display = ("store", "section", "app_template", "is_active", "order")
+    list_filter = ("store", "section", "app_template", "is_active", "order")
