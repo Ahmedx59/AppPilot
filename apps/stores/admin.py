@@ -4,7 +4,7 @@ from apps.stores.models import AppSection
 from apps.stores.models import AppTemplate
 from apps.stores.models import Category
 from apps.stores.models import Store
-from apps.stores.models import StorTemplates
+from apps.stores.models import StoreTemplates
 
 
 class AppTemplateInline(admin.TabularInline):
@@ -41,7 +41,7 @@ class AdminAppTemplate(admin.ModelAdmin):
     list_filter = ("name", "section", "is_active", "order")
 
 
-@admin.register(StorTemplates)
+@admin.register(StoreTemplates)
 class AdminStorTemplates(admin.ModelAdmin):
-    list_display = ("store", "section", "app_template", "is_active", "order")
-    list_filter = ("store", "section", "app_template", "is_active", "order")
+    list_display = ("store", "id", "section", "app_template", "is_active", "order")
+    list_filter = ("store", "id", "section", "app_template", "is_active", "order")
