@@ -75,8 +75,19 @@ class AppTemplate(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.clean()
 
-class StorTemplates(models.Model):
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        from apps.stores.services.store_services import TemplatesServices
+
+        TemplatesServices().create_template(self)
+        return super().clean()
+
+
+class StoreTemplates(models.Model):
     store = models.ForeignKey(
         Store,
         related_name="store_templates",
