@@ -6,8 +6,8 @@ from apps.popup.models import StorePopup
 
 @admin.register(StorePopup)
 class AdminStorePopup(admin.ModelAdmin):
-    list_display = ("store_id", "name", "active")
-    list_filter = ("store_id", "name", "active")
+    list_display = ("name", "store", "active")
+    list_filter = ("name", "store", "active")
 
 
 @admin.register(Popup)
