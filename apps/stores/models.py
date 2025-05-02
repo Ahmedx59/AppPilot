@@ -17,7 +17,7 @@ class Store(models.Model):
     notification_service_auth_key = models.CharField(max_length=50, blank=True)
 
     created = models.DateField(auto_now_add=True)
-    udated = models.DateField(auto_now=True)
+    updated = models.DateField(auto_now=True)
 
     setting_has_changes = models.BooleanField(default=False)
     setting_has_value = models.BooleanField(default=False)
