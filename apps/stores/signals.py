@@ -8,4 +8,4 @@ from apps.stores.services.store_services import StoreServices
 @receiver(post_save, sender=Store)
 def create_store_template(instance, created, *args, **kwargs):
     if created:
-        StoreServices().create_store_template(instance)
+        StoreServices.create_store_template(instance)

@@ -8,4 +8,4 @@ from apps.users.models import User
 @receiver(post_save, sender=User)
 def create_store(instance, created, *args, **kwargs):
     if created:
-        StoreServices().create_store(instance)
+        StoreServices.create_store(instance)

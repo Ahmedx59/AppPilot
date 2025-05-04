@@ -83,7 +83,8 @@ class AppTemplate(models.Model):
     def clean(self):
         from apps.stores.services.store_services import TemplatesServices
 
-        TemplatesServices().create_template(self)
+        model = AppTemplate
+        TemplatesServices.create_template(self, model)
         return super().clean()
 
 
@@ -110,3 +111,16 @@ class StoreTemplates(models.Model):
 
     def __str__(self):
         return self.app_template.name
+
+    def save(self):
+        self.clean()
+
+        return super().save()
+
+    def clean(self):
+        from apps.stores.services.store_services import TemplatesServices
+
+        model = StoreTemplates
+        store = self.store
+        TemplatesServices.create_template(self, model, store)
+        return super().clean()

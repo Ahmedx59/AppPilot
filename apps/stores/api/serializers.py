@@ -38,7 +38,7 @@ class ActivateTemplateSerializer(serializers.Serializer):
         section_id = self.context["view"].kwargs["section_id"]
         template_id = self.context["view"].kwargs["pk"]
 
-        TemplatesServices().activate_template(user, section_id, template_id)
+        TemplatesServices.activate_template(user, section_id, template_id)
 
 
 class GeneralizeSerializer(serializers.Serializer):
@@ -47,4 +47,4 @@ class GeneralizeSerializer(serializers.Serializer):
         section_id = self.context["view"].kwargs["section_id"]
         template_id = self.context["view"].kwargs["pk"]
 
-        TemplatesServices().generalize_template(user, section_id, template_id)
+        TemplatesServices.generalize_template(user, section_id, template_id)
