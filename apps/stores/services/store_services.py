@@ -7,13 +7,15 @@ from apps.stores.models import StoreTemplates
 
 
 class StoreServices:
-    def create_store(self, instance, *args, **kwargs):
+    @classmethod
+    def create_store(cls, store, *args, **kwargs):
         Store.objects.create(
-            user=instance,
-            name=instance.email,
+            user=store,
+            name=store.email,
         )
 
-    def create_store_template(self, store, *args, **kwargs):
+    @classmethod
+    def create_store_template(cls, store, *args, **kwargs):
         for obj in AppTemplate.objects.all():
             StoreTemplates.objects.create(
                 app_template=obj,
@@ -26,9 +28,10 @@ class StoreServices:
 
 
 class TemplatesServices:
-    def create_template(self, app_template, *args, **kwargs):
+    @classmethod
+    def create_template(cls, app_template, model, store=None):
         if app_template.pk:
-            prev = AppTemplate.objects.get(pk=app_template.pk)
+            prev = model.objects.get(pk=app_template.pk)
             if prev.is_active and not app_template.is_active:
                 raise ValidationError(
                     {
@@ -36,29 +39,32 @@ class TemplatesServices:
                         "You must activate another one instead.",
                     },
                 )
-
-        if app_template.is_active:
-            AppTemplate.objects.filter(
+        if store:
+            query = model.objects.filter(
                 is_active=True,
                 section=app_template.section,
-            ).exclude(pk=app_template.pk).update(is_active=False)
+                store=app_template.store,
+            ).exclude(pk=app_template.pk)
+        else:
+            query = model.objects.filter(
+                is_active=True,
+                section=app_template.section,
+            ).exclude(pk=app_template.pk)
 
-        if (
-            AppTemplate.objects.filter(is_active=True, section=app_template.section)
-            .exclude(pk=app_template.pk)
-            .exists()
-        ):
-            if app_template.is_active:
-                raise ValidationError(
-                    {"is_active": "must be one active template per section"},
-                )
+        if app_template.is_active:
+            query.update(is_active=False)
 
-        elif not app_template.is_active:
+        cls.templates_create(app_template, model, query, store)
+
+    @staticmethod
+    def templates_create(app_template, model, query, store):
+        if not (query.exists()) and not app_template.is_active:
             raise ValidationError(
-                {"is_active": "must be one active template per section 1 "},
+                {"is_active": "must be one active template per section"},
             )
 
-    def activate_template(self, user, section_id, template_id):
+    @classmethod
+    def activate_template(cls, user, section_id, template_id):
         user_store = user.store
 
         template_to_activate = get_object_or_404(
@@ -78,7 +84,8 @@ class TemplatesServices:
 
         return template_to_activate
 
-    def generalize_template(self, user, section_id, template_id):
+    @classmethod
+    def generalize_template(cls, user, section_id, template_id):
         user_store = user.store
 
         source_template = get_object_or_404(

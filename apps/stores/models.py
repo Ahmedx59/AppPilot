@@ -17,7 +17,7 @@ class Store(models.Model):
     notification_service_auth_key = models.CharField(max_length=50, blank=True)
 
     created = models.DateField(auto_now_add=True)
-    udated = models.DateField(auto_now=True)
+    updated = models.DateField(auto_now=True)
 
     setting_has_changes = models.BooleanField(default=False)
     setting_has_value = models.BooleanField(default=False)
@@ -83,7 +83,8 @@ class AppTemplate(models.Model):
     def clean(self):
         from apps.stores.services.store_services import TemplatesServices
 
-        TemplatesServices().create_template(self)
+        model = AppTemplate
+        TemplatesServices.create_template(self, model)
         return super().clean()
 
 
@@ -110,3 +111,16 @@ class StoreTemplates(models.Model):
 
     def __str__(self):
         return self.app_template.name
+
+    def save(self):
+        self.clean()
+
+        return super().save()
+
+    def clean(self):
+        from apps.stores.services.store_services import TemplatesServices
+
+        model = StoreTemplates
+        store = self.store
+        TemplatesServices.create_template(self, model, store)
+        return super().clean()
