@@ -4,7 +4,8 @@ from apps.popup.models import StorePopup
 
 
 class PopupStoreServices:
-    def activate(self, store_popup):
+    @classmethod
+    def activate(cls, store_popup):
         if store_popup.active:
             active_popup = StorePopup.objects.filter(
                 active=True,
@@ -23,7 +24,7 @@ class PopupStoreServices:
 #     @classmethod
 #     def activate(cls, store_popup ,hjf):
 #         cls.test()
-#         cls.genrate(store_popup)
+#         cls.generate(store_popup)
 #         # self.queryset.filter(name="ds")
 
 
@@ -32,7 +33,7 @@ class PopupStoreServices:
 
 
 #     @staticmethod
-#     def genrate(store_popup):
+#     def generate(store_popup):
 #          if store_popup.active:
 #             active_popup = StorePopup.objects.filter
 #               (active=True , store = store_popup.store).count()
