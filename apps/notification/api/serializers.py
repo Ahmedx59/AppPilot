@@ -6,7 +6,7 @@ from apps.notification.models import Notification
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ("title", "message", "url", "sent_at", "created_at")
+        fields = ("title", "message", "url", "sent_at", "created_at","is_published",)
 
 
 class UpdateCreateNotificationSerializer(serializers.ModelSerializer):
