@@ -91,6 +91,7 @@ LOCAL_APPS = [
     "apps.users",
     "apps.stores",
     "apps.popup",
+    "apps.notification",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
