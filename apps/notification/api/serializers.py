@@ -12,7 +12,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 class UpdateCreateNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ("title","message","url","sent_at",)
+        fields = ("title","message","url",)
 
         
     def create(self, validated_data):

@@ -17,3 +17,4 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user_store = self.request.user.store
         return super().get_queryset().filter(store=user_store)
+    
