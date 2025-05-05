@@ -38,6 +38,7 @@ urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     path("api/", include("apps.stores.urls")),
+    path("api/", include("apps.popup.urls")),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # DRF auth token

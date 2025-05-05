@@ -45,5 +45,5 @@ class StorePopup(models.Model):
     def clean(self):
         from apps.popup.services.popup_services import PopupStoreServices
 
-        PopupStoreServices().activate(self)
+        PopupStoreServices.activate(self)
         return super().clean()
