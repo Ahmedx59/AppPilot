@@ -11,7 +11,6 @@ from apps.stores.api.serializers import CategorySerializer
 from apps.stores.api.serializers import GeneralizeSerializer
 from apps.stores.api.serializers import StoreTemplatesSerializer
 from apps.stores.api.serializers import UpdateStoreTemplateSerializer
-from apps.stores.models import AppSection
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
 
@@ -41,9 +40,8 @@ class StoreTemplatesViewSet(
         queryset = super().get_queryset()
 
         section_id = self.kwargs["section_id"]
-        section = AppSection.objects.get(id=section_id)
-
-        return queryset.filter(section=section, store=user_store)
+        # section = AppSection.objects.get(id=section_id)
+        return queryset.filter(section_id=section_id, store=user_store)
 
     @action(detail=True, methods=["post"], serializer_class=ActivateTemplateSerializer)
     def activate(self, request, section_id, pk):
