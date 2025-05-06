@@ -4,10 +4,10 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 
-class PopupsConfig(AppConfig):
-    name = "apps.popup"
-    verbose_name = _("Popup")
+class NotificationsConfig(AppConfig):
+    name = "apps.notification"
+    verbose_name = _("Notification")
 
     def ready(self):
         with contextlib.suppress(ImportError):
-            import apps.popup.signals  # noqa: F401
+            import apps.notification.signals  # noqa: F401
