@@ -124,3 +124,12 @@ class StoreTemplates(models.Model):
         store = self.store
         TemplatesServices.create_template(self, model, store)
         return super().clean()
+
+
+class Visit(models.Model):
+    store = models.ForeignKey(Store, related_name="visit", on_delete=models.CASCADE)
+    date = models.DateField(blank=True, null=True)
+    count = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.sore.name
