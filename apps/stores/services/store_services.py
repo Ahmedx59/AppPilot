@@ -1,9 +1,13 @@
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
+from django.utils.timezone import now
 
 from apps.stores.models import AppTemplate
 from apps.stores.models import Store
 from apps.stores.models import StoreTemplates
+from apps.stores.models import Visit
 
 
 class StoreServices:
@@ -106,3 +110,34 @@ class TemplatesServices:
             template.components_backup = template.components
             template.components = copied_components
             template.save()
+
+
+class VisitService:
+    @classmethod
+    def visits_store(cls, user_store):
+        today = now().date()
+
+        last_days = [today - timedelta(days=x) for x in range(7)]
+
+        visits = Visit.objects.filter(store=user_store, date__in=last_days)
+
+        result = []
+        for day in last_days:
+            visits_by_date = visits.filter(date=day).first()
+
+            if visits_by_date:
+                result.append(
+                    {
+                        "date": visits_by_date.date,
+                        "count": visits_by_date.count,
+                    },
+                )
+
+            else:
+                result.append(
+                    {
+                        "date": day,
+                        "count": 0,
+                    },
+                )
+        return result
