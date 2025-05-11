@@ -5,6 +5,7 @@ from apps.stores.models import AppTemplate
 from apps.stores.models import Category
 from apps.stores.models import Store
 from apps.stores.models import StoreTemplates
+from apps.stores.models import Visit
 
 
 class AppTemplateInline(admin.TabularInline):
@@ -45,3 +46,9 @@ class AdminAppTemplate(admin.ModelAdmin):
 class AdminStorTemplates(admin.ModelAdmin):
     list_display = ("store", "id", "section", "app_template", "is_active", "order")
     list_filter = ("store", "id", "section", "app_template", "is_active", "order")
+
+
+@admin.register(Visit)
+class AdminVisit(admin.ModelAdmin):
+    list_display = ("date",)
+    list_filter = ("date",)

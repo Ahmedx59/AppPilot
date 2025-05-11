@@ -4,6 +4,7 @@ from apps.stores.models import AppSection
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
 from apps.stores.services.store_services import TemplatesServices
+from apps.stores.services.store_services import VisitService
 
 
 class AppSectionSerializer(serializers.ModelSerializer):
@@ -48,3 +49,11 @@ class GeneralizeSerializer(serializers.Serializer):
         template_id = self.context["view"].kwargs["pk"]
 
         TemplatesServices.generalize_template(user, section_id, template_id)
+
+
+class VisitSerializer(serializers.Serializer):
+    per_day = serializers.SerializerMethodField()
+
+    def get_per_day(self, *args, **kwargs):
+        user_store = self.context["request"].user.store
+        return VisitService.visits_store(user_store)

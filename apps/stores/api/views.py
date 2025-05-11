@@ -4,15 +4,16 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.stores.api.serializers import ActivateTemplateSerializer
-
 # from apps.stores.api.serializers import AppSectionSerializer
+from apps.stores.api.serializers import ActivateTemplateSerializer
 from apps.stores.api.serializers import CategorySerializer
 from apps.stores.api.serializers import GeneralizeSerializer
 from apps.stores.api.serializers import StoreTemplatesSerializer
 from apps.stores.api.serializers import UpdateStoreTemplateSerializer
+from apps.stores.api.serializers import VisitSerializer
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
+from apps.stores.models import Visit
 
 
 class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -59,3 +60,15 @@ class StoreTemplatesViewSet(
             {"detail": "Components generalized to other templates."},
             status=status.HTTP_200_OK,
         )
+
+
+class StoreViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Visit.objects.all()
+    serializer_class = VisitSerializer
+    pagination_class = None
+
+    @action(detail=True, methods=["get"])
+    def visit(self, request, *args, **kwargs):
+        user_store = request.user.store
+        serializer = self.get_serializer(user_store)
+        return Response(serializer.data)
