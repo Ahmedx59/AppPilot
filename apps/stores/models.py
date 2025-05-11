@@ -132,4 +132,4 @@ class Visit(models.Model):
     count = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.sore.name
+        return self.store.name
