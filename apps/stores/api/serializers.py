@@ -53,7 +53,22 @@ class GeneralizeSerializer(serializers.Serializer):
 
 class VisitSerializer(serializers.Serializer):
     per_day = serializers.SerializerMethodField()
+    per_month = serializers.SerializerMethodField()
+    today = serializers.SerializerMethodField()
+    month_total = serializers.SerializerMethodField()
 
     def get_per_day(self, *args, **kwargs):
         user_store = self.context["request"].user.store
         return VisitService.visits_store(user_store)
+    
+    def get_per_month(self, *args, **kwargs):
+        user_store = self.context["request"].user.store
+        return VisitService.visits_store_month(user_store)
+    
+    def get_today(self, *args, **kwargs):
+        user_store = self.context["request"].user.store
+        return VisitService.visits_today(user_store)
+
+    def get_month_total(self, *args, **kwargs):
+        user_store = self.context["request"].user.store
+        return VisitService.total_month_count(user_store)
