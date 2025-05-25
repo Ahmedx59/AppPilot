@@ -73,20 +73,3 @@ class VisitSerializer(serializers.Serializer):
 
     def get_month_total(self, *args, **kwargs):
         return VisitService.total_month_count(self.user_store)
-
-class VisitsSerializer(serializers.Serializer):
-    seven_days = serializers.SerializerMethodField()
-    monthly = serializers.SerializerMethodField()
-    filter_days = serializers.SerializerMethodField()
-
-    def get_filter_days(self,*args, **kwargs):
-        filter_type = self.context.get("day") or "daily"
-        store = self.context['request'].user.store
-        
-        if filter_type == "daily":
-            return VisitService.visits_store(store)
-        
-        if filter_type == "month":
-            return VisitService.visits_store_month(store)
-
-

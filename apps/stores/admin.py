@@ -46,6 +46,19 @@ class AdminAppTemplate(admin.ModelAdmin):
 class AdminStorTemplates(admin.ModelAdmin):
     list_display = ("store", "id", "section", "app_template", "is_active", "order")
     list_filter = ("store", "id", "section", "app_template", "is_active", "order")
+    actions = ("backup_components",)
+
+    def backup_components(self, request, queryset):
+        try:
+            count = 0
+            for obj in queryset:
+                obj.components_backup = obj.components
+                obj.save()
+                count += 1
+            self.message_user(request, f"✅ Backup completed for {count} template(s).")
+        except Exception as e:
+            self.message_user(request, f"❌ An error occurred: {e}")
+            raise
 
 
 @admin.register(Visit)
