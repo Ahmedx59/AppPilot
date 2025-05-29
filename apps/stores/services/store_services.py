@@ -31,6 +31,16 @@ class StoreServices:
                 store=store,
             )
 
+    @classmethod
+    def backup_store(cls, queryset):
+        for store in queryset:
+            templates = store.store_templates.all()
+
+            for template in templates:
+                template.components_backup = template.components
+                
+                template.save()
+
 
 class TemplatesServices:
     @classmethod
