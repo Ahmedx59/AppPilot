@@ -52,8 +52,24 @@ class GeneralizeSerializer(serializers.Serializer):
 
 
 class VisitSerializer(serializers.Serializer):
-    per_day = serializers.SerializerMethodField()
+    filter_days = serializers.SerializerMethodField()
+    today = serializers.SerializerMethodField()
+    month_total = serializers.SerializerMethodField()
 
-    def get_per_day(self, *args, **kwargs):
-        user_store = self.context["request"].user.store
-        return VisitService.visits_store(user_store)
+    def get_filter_days(self, obj):
+        self.user_store = self.context["request"].user.store
+        filter_type = self.context.get("day") or "daily"
+
+        if filter_type == "daily":
+            return VisitService.visits_store(self.user_store)
+
+        if filter_type == "month":
+            return VisitService.visits_store_month(self.user_store)
+
+        return {"error": "Invalid filter type"}
+
+    def get_today(self, *args, **kwargs):
+        return VisitService.visits_today(self.user_store)
+
+    def get_month_total(self, *args, **kwargs):
+        return VisitService.total_month_count(self.user_store)

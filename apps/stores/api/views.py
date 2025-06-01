@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
@@ -21,6 +22,7 @@ class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = CategorySerializer
 
 
+@extend_schema("Template")
 class StoreTemplatesViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -69,6 +71,10 @@ class StoreViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     @action(detail=True, methods=["get"])
     def visit(self, request, *args, **kwargs):
+        day = self.request.query_params.get("filter_day_monthly")
         user_store = request.user.store
-        serializer = self.get_serializer(user_store)
+        serializer = self.get_serializer(
+            user_store,
+            context={"day": day, "request": request},
+        )
         return Response(serializer.data)

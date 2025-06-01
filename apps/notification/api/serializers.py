@@ -24,3 +24,17 @@ class UpdateCreateNotificationSerializer(serializers.ModelSerializer):
                 {"message": ("A published notification cannot be edited.")},
             )
         return super().update(instance, validated_data)
+
+
+class DuplicateNotificationSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        notification = self.context["notification"]
+
+        notification.pk = None
+        notification.is_published = False
+        notification.save()
+
+        return notification
+
+    def to_representation(self, instance):
+        return NotificationSerializer(instance).data
