@@ -15,7 +15,7 @@ class StorePopupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StorePopup
-        fields = ("popup", "active", "setting", "page_url", "name", "updated_at")
+        fields = ("id", "popup", "active", "setting", "page_url", "name", "updated_at")
         # exclude = ("store","updated_at",)
 
 
@@ -27,3 +27,24 @@ class UpdateCreateStorePopupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["store"] = self.context["request"].user.store
         return super().create(validated_data)
+
+
+class DuplicateStorePopupSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        store_popup = self.context["store_popup"]
+        store_popup.pk = None
+        store_popup.active = False
+        store_popup.save()
+        return store_popup
+
+    def to_representation(self, instance):
+        return StorePopupSerializer(instance).data
+
+
+class ResetStorePopupSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        store_popup = self.context["store_popup"]
+        store_popup.setting = store_popup.popup.default_setting
+        store_popup.active = False
+        store_popup.save()
+        return store_popup
