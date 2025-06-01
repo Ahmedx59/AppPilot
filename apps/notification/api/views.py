@@ -1,9 +1,11 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
+from apps.notification.api.serializers import DuplicateNotificationSerializer
 from apps.notification.api.serializers import NotificationSerializer
 from apps.notification.api.serializers import UpdateCreateNotificationSerializer
 from apps.notification.models import Notification
@@ -34,19 +36,26 @@ class NotificationViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
+    @extend_schema(request=None, responses=DuplicateNotificationSerializer)
     @action(detail=True, methods=["post"])
     def duplicate(self, request, pk=None):
         notification = self.get_object()
+
         if notification.is_published:
             return Response(
                 {
-                    "message": (
-                        "This notification is already published and cannot be copied."
-                    ),
+                    "message": "This notification is already published"
+                    "and cannot be copied.",
                 },
                 status=status.HTTP_200_OK,
             )
-        notification.pk = None
-        notification.save()
-        serializer = self.get_serializer(notification)
+
+        serializer = DuplicateNotificationSerializer(
+            data={},
+            context={"notification": notification},
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
