@@ -1,8 +1,5 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from django.contrib import messages
-from apps.stores.services.store_services import StoreServices
-
 
 from apps.stores.models import AppSection
 from apps.stores.models import AppTemplate
@@ -10,6 +7,7 @@ from apps.stores.models import Category
 from apps.stores.models import Store
 from apps.stores.models import StoreTemplates
 from apps.stores.models import Visit
+from apps.stores.services.store_services import StoreServices
 
 
 class AppTemplateInline(admin.TabularInline):
@@ -30,10 +28,14 @@ class AdminStore(admin.ModelAdmin):
         try:
             StoreServices.backup_store(queryset)
 
-            self.message_user(request, f"✅ Backup completed")
+            self.message_user(request, "✅ Backup completed")
 
-        except Exception as e:
-            self.message_user(request, f"❌ An error occurred: {str(e)}", level=messages.ERROR)
+        except Exception as e:  # noqa: BLE001
+            self.message_user(
+                request,
+                f"❌ An error occurred: {e!s}",
+                level=messages.ERROR,
+            )
 
 
 @admin.register(Category)
@@ -59,7 +61,7 @@ class AdminAppTemplate(admin.ModelAdmin):
 @admin.register(StoreTemplates)
 class AdminStorTemplates(admin.ModelAdmin):
     list_display = ("store", "id", "section", "app_template", "is_active", "order")
-    list_filter = ("store", "section", "app_template", "is_active",)
+    list_filter = ("store", "section", "app_template", "is_active")
 
 
 @admin.register(Visit)
