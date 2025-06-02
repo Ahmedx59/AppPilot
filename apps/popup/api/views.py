@@ -28,26 +28,24 @@ class StorePopupViewSet(viewsets.ModelViewSet):
         user_store = self.request.user.store
         return super().get_queryset().filter(store=user_store)
 
-    @extend_schema(request=None, responses=DuplicateStorePopupSerializer)
-    @action(detail=True, methods=["post"])
+    # @extend_schema(request=None, responses=DuplicateStorePopupSerializer)
+    @action(detail=True, methods=["post"],serializer_class = DuplicateStorePopupSerializer)
     def duplicate(self, request, pk=None):
         store_popup = self.get_object()
-        serializer = DuplicateStorePopupSerializer(
-            data={},
-            context={"store_popup": store_popup},
+        serializer = self.get_serializer(
+            data={}, context={"store_popup": store_popup}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @extend_schema(request=None, responses=StorePopupSerializer)
-    @action(detail=True, methods=["post"])
+    # @extend_schema(request=None, responses=ResetStorePopupSerializer)
+    @action(detail=True, methods=["post"], serializer_class = ResetStorePopupSerializer)
     def reset(self, request, pk=None):
         store_popup = self.get_object()
-        serializer = ResetStorePopupSerializer(
-            data={},
-            context={"store_popup": store_popup},
+        serializer = self.get_serializer(
+            data={}, context={"store_popup": store_popup}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -55,6 +53,9 @@ class StorePopupViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class PopupViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class PopupViewSet(
+    mixins.ListModelMixin, 
+    viewsets.GenericViewSet
+):
     queryset = Popup.objects.all()
     serializer_class = PopupSerializer
