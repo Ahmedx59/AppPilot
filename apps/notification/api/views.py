@@ -1,4 +1,3 @@
-from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -37,7 +36,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
         )
 
     # @extend_schema(request=None, responses=DuplicateNotificationSerializer)
-    @action(detail=True, methods=["post"],serializer_class=DuplicateNotificationSerializer)
+    @action(
+        detail=True,
+        methods=["post"],
+        serializer_class=DuplicateNotificationSerializer,
+    )
     def duplicate(self, request, pk=None):
         notification = self.get_object()
 

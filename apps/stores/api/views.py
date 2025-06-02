@@ -19,7 +19,7 @@ from apps.stores.models import Visit
 
 class CategoryViewSet(
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -67,9 +67,7 @@ class StoreTemplatesViewSet(
         )
 
 
-class StoreViewSet(
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet):
+class StoreViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Visit.objects.all()
     serializer_class = VisitSerializer
     pagination_class = None

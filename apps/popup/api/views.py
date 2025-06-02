@@ -1,4 +1,3 @@
-from drf_spectacular.utils import extend_schema
 from rest_framework import mixins
 from rest_framework import status
 from rest_framework import viewsets
@@ -29,11 +28,16 @@ class StorePopupViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(store=user_store)
 
     # @extend_schema(request=None, responses=DuplicateStorePopupSerializer)
-    @action(detail=True, methods=["post"],serializer_class = DuplicateStorePopupSerializer)
+    @action(
+        detail=True,
+        methods=["post"],
+        serializer_class=DuplicateStorePopupSerializer,
+    )
     def duplicate(self, request, pk=None):
         store_popup = self.get_object()
         serializer = self.get_serializer(
-            data={}, context={"store_popup": store_popup}
+            data={},
+            context={"store_popup": store_popup},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -41,11 +45,12 @@ class StorePopupViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     # @extend_schema(request=None, responses=ResetStorePopupSerializer)
-    @action(detail=True, methods=["post"], serializer_class = ResetStorePopupSerializer)
+    @action(detail=True, methods=["post"], serializer_class=ResetStorePopupSerializer)
     def reset(self, request, pk=None):
         store_popup = self.get_object()
         serializer = self.get_serializer(
-            data={}, context={"store_popup": store_popup}
+            data={},
+            context={"store_popup": store_popup},
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -54,8 +59,8 @@ class StorePopupViewSet(viewsets.ModelViewSet):
 
 
 class PopupViewSet(
-    mixins.ListModelMixin, 
-    viewsets.GenericViewSet
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
 ):
     queryset = Popup.objects.all()
     serializer_class = PopupSerializer

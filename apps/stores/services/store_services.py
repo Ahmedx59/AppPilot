@@ -38,7 +38,7 @@ class StoreServices:
 
             for template in templates:
                 template.components_backup = template.components
-                
+
                 template.save()
 
 
