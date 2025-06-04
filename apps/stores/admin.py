@@ -22,7 +22,7 @@ class AppSectionInline(admin.TabularInline):
 class AdminStore(admin.ModelAdmin):
     list_display = ("user", "name")
     list_filter = ("user", "name")
-    actions = ("backup_store",)
+    actions = ("backup_store","reset_store",)
 
     def backup_store(self, request, queryset):
         try:
@@ -36,6 +36,20 @@ class AdminStore(admin.ModelAdmin):
                 f"❌ An error occurred: {e!s}",
                 level=messages.ERROR,
             )
+
+
+    def reset_store(self , request , queryset):
+        try:
+            StoreServices.reset_store(queryset)
+            self.message_user(request, "✅ Reset completed")
+
+        except Exception as e:
+            self.message_user(
+                request,
+                f"❌ An error occurred: {e!s}",
+                level=messages.ERROR,
+            )            
+
 
 
 @admin.register(Category)
