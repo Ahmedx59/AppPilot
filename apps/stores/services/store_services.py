@@ -132,6 +132,12 @@ class TemplatesServices:
             template.components = copied_components
             template.save()
 
+    @classmethod
+    def restore_template(cls,template):
+        if template.components_backup:
+            template.components = template.components_backup
+            template.save()
+
 
 class VisitService:
     @classmethod

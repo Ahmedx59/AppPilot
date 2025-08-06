@@ -16,7 +16,7 @@ from apps.stores.api.serializers import VisitSerializer
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
 from apps.stores.models import Visit
-
+from apps.stores.services.store_services import TemplatesServices
 
 class CategoryViewSet(
     mixins.ListModelMixin,
@@ -77,6 +77,14 @@ class StoreTemplatesViewSet(
             status=status.HTTP_200_OK,
         )
 
+
+    @action(detail=True, methods=["post"],serializer_class=None)
+    def restore(self, *args, **kwargs):
+        template_id = self.kwargs["pk"]
+        template = StoreTemplates.objects.get(pk = template_id)
+        TemplatesServices.restore_template(template)
+        return Response({"detail":"Template Restore completed"})
+    
 
 class StoreViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Visit.objects.all()
