@@ -12,6 +12,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 
+from apps.users.api.views import CustomTokenObtainPairView
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
@@ -40,7 +42,7 @@ urlpatterns += [
     path("api/", include("apps.stores.urls")),
     path("api/", include("apps.popup.urls")),
     path("api/", include("apps.notification.urls")),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # DRF auth token
     path("api/auth-token/", obtain_auth_token, name="obtain_auth_token"),
