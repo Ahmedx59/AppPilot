@@ -22,13 +22,13 @@ class AppSectionInline(admin.TabularInline):
 class AdminStore(admin.ModelAdmin):
     list_display = ("user", "name")
     list_filter = ("user", "name")
-    actions = ("backup_store", "reset_store")
+    actions = ("backup_store", "reset_store","restore_store")
 
     def backup_store(self, request, queryset):
         try:
             StoreServices.backup_store(queryset)
 
-            self.message_user(request, "✅ Backup completed")
+            self.message_user(request, "✅ Backup Completed")
 
         except Exception as e:  # noqa: BLE001
             self.message_user(
@@ -40,9 +40,23 @@ class AdminStore(admin.ModelAdmin):
     def reset_store(self, request, queryset):
         try:
             StoreServices.reset_store(queryset)
-            self.message_user(request, "✅ Reset completed")
+
+            self.message_user(request, "✅ Reset Completed")
 
         except Exception as e:  # noqa: BLE001
+            self.message_user(
+                request,
+                f"❌ An error occurred: {e!s}",
+                level=messages.ERROR,
+            )
+
+    def restore_store(self, request, queryset):
+        try:
+            StoreServices.restore_store(queryset)
+
+            self.message_user(request, "✅ Restore Completed")
+
+        except Exception as e: # noqa: BLE001
             self.message_user(
                 request,
                 f"❌ An error occurred: {e!s}",

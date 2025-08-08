@@ -80,8 +80,7 @@ class StoreTemplatesViewSet(
 
     @action(detail=True, methods=["post"],serializer_class=None)
     def restore(self, *args, **kwargs):
-        template_id = self.kwargs["pk"]
-        template = StoreTemplates.objects.get(pk = template_id)
+        template = self.get_object()
         TemplatesServices.restore_template(template)
         return Response({"detail":"Template Restore completed"})
     

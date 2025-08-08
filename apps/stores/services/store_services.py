@@ -51,7 +51,16 @@ class StoreServices:
 
                 template.save()
 
+    @classmethod
+    def restore_store(cls, queryset):
+        for store in queryset:
+            templates = store.store_templates.all()
 
+            for template in templates:
+                if template.components_backup:
+                    template.components = template.components_backup
+                    template.save()
+                
 class TemplatesServices:
     @classmethod
     def create_template(cls, app_template, model, store=None):
