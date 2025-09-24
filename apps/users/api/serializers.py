@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from apps.users.models import User
 
@@ -21,6 +20,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
 
         if self.user.is_blocked:
-            raise AuthenticationFailed("This account is blocked.")
+            raise AuthenticationFailed
 
         return data
