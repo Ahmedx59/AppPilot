@@ -82,7 +82,7 @@ class AppTemplate(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        from apps.stores.services.store_services import TemplatesServices
+        from apps.stores.services.template_services import TemplatesServices
 
         model = AppTemplate
         TemplatesServices.create_template(self, model)
@@ -115,11 +115,13 @@ class StoreTemplates(models.Model):
 
     def save(self):
         self.clean()
+        super().save()
 
-        return super().save()
+        # self.store.setting_has_changes = True
+        # self.store.save()
 
     def clean(self):
-        from apps.stores.services.store_services import TemplatesServices
+        from apps.stores.services.template_services import TemplatesServices
 
         model = StoreTemplates
         store = self.store

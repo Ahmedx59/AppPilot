@@ -3,8 +3,8 @@ from rest_framework import serializers
 from apps.stores.models import AppSection
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
-from apps.stores.services.store_services import TemplatesServices
-from apps.stores.services.store_services import VisitService
+from apps.stores.services.template_services import TemplatesServices
+from apps.stores.services.visit_services import VisitService
 
 
 class AppSectionSerializer(serializers.ModelSerializer):
