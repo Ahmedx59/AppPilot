@@ -10,7 +10,7 @@ from apps.stores.models import Store
 
 class ApplySetting:
     @classmethod
-    def process_sections(cls, queryset):
+    def process_sections(cls, queryset): 
         sections_data = {
             "sections": []
         }
