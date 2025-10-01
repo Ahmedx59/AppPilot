@@ -29,6 +29,7 @@ class UserAdmin(auth_admin.UserAdmin):
                     "is_active",
                     "is_staff",
                     "is_superuser",
+                    "is_blocked",
                     "groups",
                     "user_permissions",
                 ),
@@ -36,7 +37,7 @@ class UserAdmin(auth_admin.UserAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    list_display = ["email", "name", "is_superuser"]
+    list_display = ["email", "name", "is_superuser", "is_blocked"]
     search_fields = ["name"]
     ordering = ["id"]
     add_fieldsets = (
@@ -44,7 +45,7 @@ class UserAdmin(auth_admin.UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2"),
+                "fields": ("email", "password1", "password2", "is_blocked"),
             },
         ),
     )

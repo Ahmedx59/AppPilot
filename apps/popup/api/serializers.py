@@ -48,3 +48,6 @@ class ResetStorePopupSerializer(serializers.Serializer):
         store_popup.active = False
         store_popup.save()
         return store_popup
+
+    def to_representation(self, instance):
+        return StorePopupSerializer(instance).data

@@ -3,8 +3,8 @@ from rest_framework import serializers
 from apps.stores.models import AppSection
 from apps.stores.models import Category
 from apps.stores.models import StoreTemplates
-from apps.stores.services.store_services import TemplatesServices
-from apps.stores.services.store_services import VisitService
+from apps.stores.services.template_services import TemplatesServices
+from apps.stores.services.visit_services import VisitService
 
 
 class AppSectionSerializer(serializers.ModelSerializer):
@@ -18,7 +18,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ("name", "icon", "order", "section")
+        fields = ("id", "name", "icon", "order", "section",)
+
+
+class CategoryListSerializer(CategorySerializer):
+    class Meta:
+        model = Category
+        fields = ("id", "name", "icon", "order", "section",)
 
 
 class StoreTemplatesSerializer(serializers.ModelSerializer):
@@ -42,7 +48,7 @@ class ActivateTemplateSerializer(serializers.Serializer):
         TemplatesServices.activate_template(user, section_id, template_id)
 
 
-class GeneralizeSerializer(serializers.Serializer):
+class GeneralizeTemplateSerializer(serializers.Serializer):
     def save(self, **kwargs):
         user = self.context["request"].user
         section_id = self.context["view"].kwargs["section_id"]

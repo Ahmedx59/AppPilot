@@ -7,7 +7,7 @@ __pycache__/
 # C extensions
 *.so
 tasks.md
-
+aplly_settings_data.json
 # Distribution / packaging
 .Python
 build/
