@@ -7,11 +7,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
 from apps.users.models import User
 
-from .serializers import UserSerializer
 from .serializers import CustomTokenObtainPairSerializer
+from .serializers import UserSerializer
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):

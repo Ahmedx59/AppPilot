@@ -1,7 +1,6 @@
 from apps.stores.models import AppTemplate
 from apps.stores.models import Store
 from apps.stores.models import StoreTemplates
-from apps.stores.models import AppSection
 
 
 class StoreServices:

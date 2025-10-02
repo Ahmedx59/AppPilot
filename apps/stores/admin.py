@@ -8,7 +8,7 @@ from apps.stores.models import Store
 from apps.stores.models import StoreTemplates
 from apps.stores.models import Visit
 from apps.stores.services.store_services import StoreServices
-from apps.stores.services.store_setting_services import ApplySetting 
+from apps.stores.services.store_setting_services import ApplySetting
 
 
 class AppTemplateInline(admin.TabularInline):
@@ -23,7 +23,7 @@ class AppSectionInline(admin.TabularInline):
 class AdminStore(admin.ModelAdmin):
     list_display = ("user", "name")
     list_filter = ("user", "name")
-    actions = ("backup_store", "reset_store", "restore_store","apply_setting")
+    actions = ("backup_store", "reset_store", "restore_store", "apply_setting")
 
     def backup_store(self, request, queryset):
         try:
@@ -65,9 +65,9 @@ class AdminStore(admin.ModelAdmin):
             )
 
     def apply_setting(self, request, queryset):
-        try :
+        try:
             ApplySetting.save_setting_file(queryset)
-            
+
             self.message_user(request, "✅ Settings file generated and saved.")
 
         except Exception as e:  # noqa: BLE001

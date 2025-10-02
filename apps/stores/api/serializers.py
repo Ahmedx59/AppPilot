@@ -18,13 +18,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ("id", "name", "icon", "order", "section",)
+        fields = ("id", "name", "icon", "order", "section")
 
 
 class CategoryListSerializer(CategorySerializer):
     class Meta:
         model = Category
-        fields = ("id", "name", "icon", "order", "section",)
+        fields = ("id", "name", "icon", "order", "section")
 
 
 class StoreTemplatesSerializer(serializers.ModelSerializer):
