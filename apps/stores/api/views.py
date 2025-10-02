@@ -78,7 +78,6 @@ class StoreTemplatesViewSet(
             status=status.HTTP_200_OK,
         )
 
-
     @action(detail=True, methods=["post"], serializer_class=None)
     def restore(self, *args, **kwargs):
         template = self.get_object()

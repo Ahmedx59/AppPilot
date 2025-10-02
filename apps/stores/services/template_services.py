@@ -1,8 +1,11 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 
-from apps.stores.models import StoreTemplates
 from apps.stores.models import Store
+from apps.stores.models import StoreTemplates
+
+# ruff: noqa: SLF001
+
 
 class TemplatesServices:
     @classmethod
@@ -85,16 +88,16 @@ class TemplatesServices:
             template.save()
 
     @classmethod
-    def restore_template(cls,template):
+    def restore_template(cls, template):
         if template.components_backup:
             template.components = template.components_backup
             template.save()
-    
+
     @classmethod
-    def check_components(cls, template,model):
+    def check_components(cls, template, model):
         if template.components.pk:
             component = model.object.get(pk=template.components.pk)
-            if not template.components.pk == component:
+            if template.components.pk != component:
                 template.store.setting_has_changes = True
                 template.save()
 
@@ -102,7 +105,7 @@ class TemplatesServices:
 class ComponentsService:
     @staticmethod
     def store_old_components(instance):
-        if instance.pk:     
+        if instance.pk:
             try:
                 old_instance = instance.__class__.objects.get(pk=instance.pk)
                 instance._old_components = old_instance.components
@@ -115,7 +118,9 @@ class ComponentsService:
     def check_components_after_save(instance, created):
         if not created and hasattr(instance, "_old_components"):
             if instance._old_components != instance.components:
-                Store.objects.filter(pk=instance.store.pk).update(setting_has_changes=True)
+                Store.objects.filter(pk=instance.store.pk).update(
+                    setting_has_changes=True,
+                )
 
     @staticmethod
     def store_components(instance):

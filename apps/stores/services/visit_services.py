@@ -1,7 +1,7 @@
+from datetime import timedelta
+
 from django.db.models import Sum
 from django.utils.timezone import now
-
-from datetime import timedelta
 
 from apps.stores.models import Visit
 
